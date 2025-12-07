@@ -1,0 +1,135 @@
+﻿<Window x:Class="MedicineProject.DoctorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MedicineProject"
+        mc:Ignorable="d"
+               Title="Рабочее место врача"
+        Height="700" Width="1100"
+        Background="#F4F7F9">
+
+    <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="0 0 0 15"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D0D7DF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Margin" Value="0 0 5 5"/>
+        </Style>
+    </Window.Resources>
+
+
+    <Grid Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Background="White" CornerRadius="10" Padding="10" 
+                BorderBrush="#D0D7DF" BorderThickness="1" Margin="0 0 15 0">
+            <DockPanel>
+                <TextBlock Text="Пациенты" FontSize="18" FontWeight="Bold" 
+                           Margin="5" DockPanel.Dock="Top"/>
+                <ListBox x:Name="lstPatients" 
+                         DisplayMemberPath="FullName"
+                         SelectionChanged="lstPatients_SelectionChanged"
+                         BorderThickness="0" />
+            </DockPanel>
+        </Border>
+
+
+        <ScrollViewer Grid.Column="1" Margin="10 0 0 0">
+            <StackPanel Orientation="Vertical">
+
+                <GroupBox Header="Основная информация">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="ФИО:" Style="{StaticResource LabelStyle}" Grid.Row="0"/>
+                        <TextBlock x:Name="txtFullName" Grid.Row="0" Grid.Column="1"/>
+
+                        <TextBlock Text="Дата рождения:" Style="{StaticResource LabelStyle}" Grid.Row="1"/>
+                        <TextBlock x:Name="txtDOB" Grid.Row="1" Grid.Column="1"/>
+
+                        <TextBlock Text="Пол:" Style="{StaticResource LabelStyle}" Grid.Row="2"/>
+                        <TextBlock x:Name="txtGender" Grid.Row="2" Grid.Column="1"/>
+
+                        <TextBlock Text="Полис:" Style="{StaticResource LabelStyle}" Grid.Row="3"/>
+                        <TextBlock x:Name="txtInsurance" Grid.Row="3" Grid.Column="1"/>
+
+                        <TextBlock Text="СНИЛС:" Style="{StaticResource LabelStyle}" Grid.Row="4"/>
+                        <TextBlock x:Name="txtSNILS" Grid.Row="4" Grid.Column="1"/>
+
+                        <TextBlock Text="Паспорт:" Style="{StaticResource LabelStyle}" Grid.Row="5"/>
+                        <TextBlock x:Name="txtPassport" Grid.Row="5" Grid.Column="1"/>
+
+                        <TextBlock Text="Телефон:" Style="{StaticResource LabelStyle}" Grid.Row="6"/>
+                        <TextBlock x:Name="txtPhone" Grid.Row="6" Grid.Column="1"/>
+                    </Grid>
+                </GroupBox>
+
+
+                <GroupBox Header="Медицинская карта">
+                    <StackPanel>
+                        <TextBlock Text="Группа крови:" Style="{StaticResource LabelStyle}" />
+                        <TextBlock x:Name="txtBloodGroup" Margin="0 0 0 10"/>
+
+                        <TextBlock Text="Хронические заболевания:" Style="{StaticResource LabelStyle}"/>
+                        <TextBlock x:Name="txtChronicDiseases" TextWrapping="Wrap" />
+                    </StackPanel>
+                </GroupBox>
+
+
+                <GroupBox Header="История посещений">
+                    <DataGrid x:Name="dgVisits"
+                              AutoGenerateColumns="False" 
+                              IsReadOnly="True"
+                              SelectionMode="Single"
+                              SelectionChanged="dgVisits_SelectionChanged"
+                              Background="White"
+                              BorderBrush="#D0D7DF">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding VisitDate}" Width="120"/>
+                            <DataGridTextColumn Header="Диагноз" Binding="{Binding Diagnosis}" Width="*"/>
+                            <DataGridTextColumn Header="Назначение" Binding="{Binding Prescriptions}" Width="*"/>
+                            <DataGridTextColumn Header="Тип направления" Binding="{Binding ReferralType}" Width="150"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+
+
+                <Button Content="Создать направление"
+                        Margin="0 15 0 0"
+                        Width="250"
+                        Height="40"
+                        Background="#3A8DDF"
+                        Foreground="White"
+                        FontSize="16"
+                        HorizontalAlignment="Left"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Click="btnCreateReferral_Click"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
