@@ -48,5 +48,55 @@ namespace MedicineProject.Models
                 .WithOne(l => l.Referral)
                 .HasForeignKey(l => l.ReferralId);
         }
+
+        public void Seed()
+        {
+            if (!Patients.Any())
+            {
+                var patient = new Patient
+                {
+                    FullName = "Иванов Иван Иванович",
+                    BirthDate = new DateTime(1985, 3, 15),
+                    Gender = "М",
+                    Address = "г. Оренбург, ул. Примерная, 5",
+                    Phone = "+7 900 123-45-67",
+                    Insurance = "1234 5678 9012 3456",
+                    SNILS = "123-456-789 00",
+                    Passport = "4500 123456"
+                };
+                Patients.Add(patient);
+                SaveChanges();
+
+                MedicalCards.Add(new MedicalCard
+                {
+                    PatientId = patient.Id,
+                    BloodGroup = "A(II) Rh+",
+                    ChronicDiseases = "Нет"
+                });
+                SaveChanges();
+
+                var visit = new Visit
+                {
+                    PatientId = patient.Id,
+                    VisitDate = DateTime.Now.AddDays(-10),
+                    Diagnosis = "ОРВИ",
+                    Prescriptions = "Пить горячее, парацетамол"
+                };
+                Visits.Add(visit);
+                SaveChanges();
+
+                var referral = new Referral
+                {
+                    VisitId = visit.Id,
+                    ReferralType = "Анализ крови",
+                    ReferralDate = DateTime.Now.AddDays(-9),
+                    Status = "New"
+                };
+                Referrals.Add(referral);
+                SaveChanges();
+            }
+        }
+
+
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MedicineProject.Models
 {
-    class Referral
+    public class Referral
     {
         public int Id { get; set; }
         public string ReferralType { get; set; } = null!;

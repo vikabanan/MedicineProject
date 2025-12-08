@@ -97,29 +97,44 @@
                         <TextBlock x:Name="txtChronicDiseases" TextWrapping="Wrap" />
                     </StackPanel>
                 </GroupBox>
+                
 
 
                 <GroupBox Header="История посещений">
                     <DataGrid x:Name="dgVisits"
-                              AutoGenerateColumns="False" 
-                              IsReadOnly="True"
-                              SelectionMode="Single"
-                              SelectionChanged="dgVisits_SelectionChanged"
-                              Background="White"
-                              BorderBrush="#D0D7DF">
+              AutoGenerateColumns="False" 
+              IsReadOnly="True"
+              SelectionMode="Single"
+              SelectionChanged="dgVisits_SelectionChanged"
+              Background="White"
+              BorderBrush="#D0D7DF">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Дата" Binding="{Binding VisitDate}" Width="120"/>
                             <DataGridTextColumn Header="Диагноз" Binding="{Binding Diagnosis}" Width="*"/>
                             <DataGridTextColumn Header="Назначение" Binding="{Binding Prescriptions}" Width="*"/>
-                            <DataGridTextColumn Header="Тип направления" Binding="{Binding ReferralType}" Width="150"/>
+                            <DataGridTextColumn Header="Кол-во направлений" Binding="{Binding Referrals.Count}" Width="150"/>
                         </DataGrid.Columns>
                     </DataGrid>
+                    
                 </GroupBox>
 
 
-                <Button Content="Создать направление"
+
+                <Button Content="Добавить визит"
                         Margin="0 15 0 0"
+                        Width="250"
+                        Height="40"
+                        Background="#4CAF50"
+                        Foreground="White"
+                        FontSize="16"
+                        HorizontalAlignment="Left"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Click="btnAddVisit_Click"/>
+
+                <Button Content="Добавить направление"
+                        Margin="0 10 0 0"
                         Width="250"
                         Height="40"
                         Background="#3A8DDF"
@@ -128,7 +143,8 @@
                         HorizontalAlignment="Left"
                         BorderThickness="0"
                         Cursor="Hand"
-                        Click="btnCreateReferral_Click"/>
+                        Click="btnAddReferral_Click"/>
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

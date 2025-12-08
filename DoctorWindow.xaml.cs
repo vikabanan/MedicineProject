@@ -1,4 +1,5 @@
 ﻿using MedicineProject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +29,13 @@ namespace MedicineProject
             LoadPatients();
         }
 
-        // загрузка пациентов
+        // загрузка пациентов, медкарты 
         private void LoadPatients()
         {
             lstPatients.ItemsSource = _db.Patients
-                .OrderBy(p => p.FullName)
-                .ToList();
+             .Include(p => p.MedicalCard)
+             .OrderBy(p => p.FullName)
+             .ToList();
         }
 
         //выбор пациента
@@ -68,10 +70,13 @@ namespace MedicineProject
         //загрузка визитов
         private void LoadVisits(int patientId)
         {
+            _db = new MedDbContext();
+
             dgVisits.ItemsSource = _db.Visits
-                .Where(v => v.PatientId == patientId)
-                .OrderByDescending(v => v.VisitDate)
-                .ToList();
+               .Where(v => v.PatientId == patientId)
+               .Include(v => v.Referrals)   // на будущее
+               .OrderByDescending(v => v.VisitDate)
+               .ToList();
         }
 
         //выбор визита
@@ -83,29 +88,44 @@ namespace MedicineProject
             // здесь можно будет выводить направления отдельно
         }
 
-        // создание направления
-        private void btnCreateReferral_Click(object sender, RoutedEventArgs e)
+
+        private void btnAddVisit_Click(object sender, RoutedEventArgs e)
         {
-            if (dgVisits.SelectedItem is not Visit visit)
+            if (lstPatients.SelectedItem is not Patient patient)
             {
-                MessageBox.Show("Выберите визит.");
+                MessageBox.Show("Выберите пациента.");
                 return;
             }
 
-            // тип направления поменять
-            var referral = new Referral
-            {
-                ReferralDate = DateTime.Now,
-                ReferralType = "Анализ крови", // надо сделать окно выбора
-                Status = "New",
-                VisitId = visit.Id
-            };
-
-            _db.Referrals.Add(referral);
-            _db.SaveChanges();
-
-            MessageBox.Show("Направление создано!");
+            // открываем окно добавления визита
+            var win = new AddVisitWindow(patient.Id, null); // без выбранного визита
+            if (win.ShowDialog() == true)
+                LoadVisits(patient.Id);
         }
+
+        private void btnAddReferral_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstPatients.SelectedItem is not Patient patient)
+            {
+                MessageBox.Show("Выберите пациента.");
+                return;
+            }
+
+            if (dgVisits.SelectedItem is not Visit visit)
+            {
+                MessageBox.Show("Выберите визит, к которому хотите добавить направление.");
+                return;
+            }
+
+            // создаём окно добавления направления 
+            var win = new AddVisitWindow(patient.Id, visit.Id);
+
+            if (win.ShowDialog() == true)
+                LoadVisits(patient.Id);
+        }
+
+
+
     }
 }
 

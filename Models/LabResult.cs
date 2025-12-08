@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MedicineProject.Models
 {
-    class LabResult
+    public class LabResult
     {
         public int Id { get; set; }
         public string Description { get; set; } = null!;

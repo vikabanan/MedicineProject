@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MedicineProject.Models
 {
-    class Patient
+     public class Patient
     {
         public int Id { get; set; }
         public string FullName { get; set; } = null!;

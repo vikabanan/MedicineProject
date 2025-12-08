@@ -3,6 +3,7 @@ using System;
 using MedicineProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicineProject.Migrations
 {
     [DbContext(typeof(MedDbContext))]
-    partial class MedDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251208055437_AddReferralFieldsToVisit")]
+    partial class AddReferralFieldsToVisit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.22");

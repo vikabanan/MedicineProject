@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MedicineProject.Models
 {
-    class MedicalCard
+    public class MedicalCard
     {
         public int Id { get; set; }
         public string BloodGroup { get; set; } = null!;
