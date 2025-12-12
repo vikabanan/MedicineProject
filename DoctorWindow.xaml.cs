@@ -97,11 +97,15 @@ namespace MedicineProject
                 return;
             }
 
-            // открываем окно добавления визита
-            var win = new AddVisitWindow(patient.Id, null); // без выбранного визита
+            var win = new AddVisitWindow(patient.Id)
+            { Owner = this };
+
             if (win.ShowDialog() == true)
+            {
                 LoadVisits(patient.Id);
+            }
         }
+
 
         private void btnAddReferral_Click(object sender, RoutedEventArgs e)
         {
@@ -117,15 +121,19 @@ namespace MedicineProject
                 return;
             }
 
-            // создаём окно добавления направления 
-            var win = new AddVisitWindow(patient.Id, visit.Id);
+            // окно добавления направления 
+            var win = new AddReferralWindow(visit.Id)
+            {
+                Owner = this
+            };
 
             if (win.ShowDialog() == true)
                 LoadVisits(patient.Id);
         }
 
-
-
-    }
+    } 
 }
 
+
+
+    

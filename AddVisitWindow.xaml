@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MedicineProject"
         mc:Ignorable="d"
-         Title="Новый визит" Height="350" Width="450"
-        WindowStartupLocation="CenterScreen">
+         Title="Добавить визит" Height="450" Width="500"
+        WindowStartupLocation="CenterOwner">
 
-    <Grid Margin="15">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -17,28 +19,29 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Дата визита:"/>
-        <DatePicker x:Name="dpDate" Grid.Row="0" Margin="150 0 0 5"/>
+        <TextBlock Text="Дата визита"/>
+        <DatePicker x:Name="dpDate" Grid.Row="1"/>
 
-        <TextBlock Text="Диагноз:" Grid.Row="1" Margin="0 10 0 0"/>
-        <TextBox x:Name="txtDiagnosis" Grid.Row="1" Margin="150 10 0 0"/>
+        <TextBlock Text="Диагноз" Grid.Row="2" Margin="0,10,0,0"/>
+        <TextBox x:Name="txtDiagnosis" Grid.Row="3"/>
 
-        <TextBlock Text="Назначения:" Grid.Row="2" Margin="0 10 0 0"/>
-        <TextBox x:Name="txtPrescriptions" Grid.Row="2" Margin="150 10 0 0"/>
+        <TextBlock Text="Назначения" Grid.Row="4" Margin="0,10,0,0"/>
+        <TextBox x:Name="txtPrescriptions" Grid.Row="5" Height="60" TextWrapping="Wrap"/>
 
-        <TextBlock Text="Тип направления:" Grid.Row="3" Margin="0 10 0 0"/>
-        <ComboBox x:Name="cbReferralType"
-                  Grid.Row="3"
-                  Margin="150 10 0 0"
-                  ItemsSource="{Binding ReferralTypes}"/>
+        <StackPanel Grid.Row="6" Margin="0,15,0,0">
+            <CheckBox x:Name="chkCreateReferral" Content="Создать направление к этому визиту"/>
 
-        <Button Content="Создать"
-                Grid.Row="4"
+            <TextBlock Text="Тип направления:" Margin="0,10,0,0"/>
+            <ComboBox x:Name="cbReferralType" IsEnabled="False"/>
+        </StackPanel>
+
+        <Button Content="Сохранить"
+                Grid.Row="7"
                 Width="150"
                 Height="40"
-                HorizontalAlignment="Left"
-                Margin="0 20 0 0"
-                Background="#3A8DDF"
+                HorizontalAlignment="Center"
+                Margin="0,20,0,0"
+                Background="#4CAF50"
                 Foreground="White"
                 Click="BtnCreate_Click"/>
     </Grid>

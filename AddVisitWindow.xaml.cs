@@ -20,66 +20,72 @@ namespace MedicineProject
     /// </summary>
     public partial class AddVisitWindow : Window
     {
-        private int _patientId;
-        private int? _previousVisitId;
-
-        public string[] ReferralTypes { get; } =
-        {
-            "Нет направления",
-            "Анализ крови",
-            "Флюорография",
-            "МРТ",
-            "УЗИ",
-            "Осмотр специалиста"
-        };
-        public string SelectedReferralType => cbReferralType.SelectedItem?.ToString();
-    
+        private readonly MedDbContext _db = new MedDbContext();
+        private readonly int _patientId;
 
         public Visit CreatedVisit { get; private set; }
 
-        public AddVisitWindow(int patientId, int? previousVisitId = null)
+        private readonly string[] ReferralTypes =
+        {
+            "Анализ крови",
+            "УЗИ",
+            "МРТ",
+            "Флюорография",
+            "Осмотр специалиста"
+        };
+
+        public AddVisitWindow(int patientId)
         {
             InitializeComponent();
-            DataContext = this;
-
             _patientId = patientId;
-            _previousVisitId = previousVisitId;
 
             dpDate.SelectedDate = DateTime.Now;
+
+            cbReferralType.ItemsSource = ReferralTypes;
+
+            chkCreateReferral.Checked += (s, e) => cbReferralType.IsEnabled = true;
+            chkCreateReferral.Unchecked += (s, e) => cbReferralType.IsEnabled = false;
         }
 
         private void BtnCreate_Click(object sender, RoutedEventArgs e)
         {
             if (dpDate.SelectedDate == null)
             {
-                MessageBox.Show("Выберите дату визита.");
+                MessageBox.Show("Выберите дату!");
                 return;
             }
-
-            if (cbReferralType.SelectedItem == null)
-            {
-                MessageBox.Show("Выберите тип направления.");
-                return;
-            }
-
-            var referralType = cbReferralType.SelectedItem.ToString();
 
             var visit = new Visit
             {
                 VisitDate = dpDate.SelectedDate.Value,
                 Diagnosis = txtDiagnosis.Text,
                 Prescriptions = txtPrescriptions.Text,
-                PatientId = _patientId,
-                ReferralType = referralType,
-                PreviousVisitId = _previousVisitId
+                PatientId = _patientId
             };
+
+            _db.Visits.Add(visit);
+            _db.SaveChanges(); 
+
+            // создание направления
+            if (chkCreateReferral.IsChecked == true && cbReferralType.SelectedItem != null)
+            {
+                var referral = new Referral
+                {
+                    ReferralDate = DateTime.Now,
+                    ReferralType = cbReferralType.SelectedItem.ToString(),
+                    Status = "New",
+                    VisitId = visit.Id
+                };
+
+                _db.Referrals.Add(referral);
+                _db.SaveChanges();
+            }
 
             CreatedVisit = visit;
 
+            MessageBox.Show("Визит успешно создан!");
             DialogResult = true;
             Close();
         }
-
     }
 }
-
