@@ -31,17 +31,41 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Background="White" CornerRadius="10" Padding="10" 
-                BorderBrush="#D0D7DF" BorderThickness="1" Margin="0 0 15 0">
+        <Border Background="White"
+        CornerRadius="10"
+        Padding="10"
+        BorderBrush="#D0D7DF"
+        BorderThickness="1"
+        Margin="0 0 15 0">
+
             <DockPanel>
-                <TextBlock Text="Пациенты" FontSize="18" FontWeight="Bold" 
-                           Margin="5" DockPanel.Dock="Top"/>
-                <ListBox x:Name="lstPatients" 
-                         DisplayMemberPath="FullName"
-                         SelectionChanged="lstPatients_SelectionChanged"
-                         BorderThickness="0" />
+
+                <TextBlock Text="Пациенты"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Margin="5"
+                   DockPanel.Dock="Top"/>
+
+                <Button Content="Добавить пациента"
+                Height="40"
+                Margin="5 10 5 0"
+                Background="#4CAF50"
+                Foreground="White"
+                FontSize="14"
+                BorderThickness="0"
+                Cursor="Hand"
+                DockPanel.Dock="Bottom"
+                Click="btnAddPatient_Click"/>
+
+                <ListBox x:Name="lstPatients"
+                 DisplayMemberPath="FullName"
+                 SelectionChanged="lstPatients_SelectionChanged"
+                 BorderThickness="0"/>
+
             </DockPanel>
+
         </Border>
+
 
 
         <ScrollViewer Grid.Column="1" Margin="10 0 0 0">
@@ -102,12 +126,13 @@
 
                 <GroupBox Header="История посещений">
                     <DataGrid x:Name="dgVisits"
-              AutoGenerateColumns="False" 
-              IsReadOnly="True"
-              SelectionMode="Single"
-              SelectionChanged="dgVisits_SelectionChanged"
-              Background="White"
-              BorderBrush="#D0D7DF">
+                              AutoGenerateColumns="False" 
+                              IsReadOnly="True"
+                              SelectionMode="Single"
+                              MouseDoubleClick="dgVisits_MouseDoubleClick"
+                              SelectionChanged="dgVisits_SelectionChanged"
+                              Background="White"
+                              BorderBrush="#D0D7DF">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Дата" Binding="{Binding VisitDate}" Width="120"/>

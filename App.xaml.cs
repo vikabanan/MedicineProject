@@ -20,7 +20,6 @@ namespace MedicineProject
                 db.Seed();                   // добавляет тестовые данные
             }
 
-            new MainWindow().Show();
         }
     }
 

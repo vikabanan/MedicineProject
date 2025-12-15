@@ -11,7 +11,7 @@ namespace MedicineProject.Models
         public int Id { get; set; }
         public string ReferralType { get; set; } = null!;
         public DateTime ReferralDate { get; set; }
-        public string Status { get; set; } = "New"; // New, InProgress, Done
+        public ReferralStatus Status { get; set; } = ReferralStatus.New;
         public int VisitId { get; set; }
         public Visit Visit { get; set; } = null!;
 

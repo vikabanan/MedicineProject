@@ -22,7 +22,6 @@ namespace MedicineProject
     {
         private readonly MedDbContext _db = new MedDbContext();
         private readonly int _patientId;
-
         public Visit CreatedVisit { get; private set; }
 
         private readonly string[] ReferralTypes =
@@ -43,8 +42,48 @@ namespace MedicineProject
 
             cbReferralType.ItemsSource = ReferralTypes;
 
-            chkCreateReferral.Checked += (s, e) => cbReferralType.IsEnabled = true;
-            chkCreateReferral.Unchecked += (s, e) => cbReferralType.IsEnabled = false;
+            chkCreateReferral.Checked += (s, e) => EnableReferralControls(true);
+            chkCreateReferral.Unchecked += (s, e) => EnableReferralControls(false);
+
+            dpDate.SelectedDateChanged += DpDate_SelectedDateChanged;
+            cbReferralType.SelectionChanged += CbReferralType_SelectionChanged;
+
+            cbReferralTime.IsEnabled = false;
+        }
+
+        private void EnableReferralControls(bool enabled)
+        {
+            cbReferralType.IsEnabled = enabled;
+            cbReferralTime.IsEnabled = enabled && cbReferralType.SelectedItem != null && dpDate.SelectedDate.HasValue;
+        }
+
+        private void DpDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateAvailableTimes();
+        }
+
+        private void CbReferralType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateAvailableTimes();
+        }
+
+        private void UpdateAvailableTimes()
+        {
+            if (chkCreateReferral.IsChecked == true && cbReferralType.SelectedItem != null && dpDate.SelectedDate.HasValue)
+            {
+                cbReferralTime.IsEnabled = true;
+
+                var timeService = new TimeSlotService(_db);
+                cbReferralTime.ItemsSource = timeService.GetAvailableReferralTimes(dpDate.SelectedDate.Value, cbReferralType.SelectedItem.ToString()!);
+
+                if (cbReferralTime.Items.Count > 0)
+                    cbReferralTime.SelectedIndex = 0;
+            }
+            else
+            {
+                cbReferralTime.ItemsSource = new List<string>();
+                cbReferralTime.IsEnabled = false;
+            }
         }
 
         private void BtnCreate_Click(object sender, RoutedEventArgs e)
@@ -64,17 +103,19 @@ namespace MedicineProject
             };
 
             _db.Visits.Add(visit);
-            _db.SaveChanges(); 
+            _db.SaveChanges();
 
-            // создание направления
-            if (chkCreateReferral.IsChecked == true && cbReferralType.SelectedItem != null)
+            if (chkCreateReferral.IsChecked == true && cbReferralType.SelectedItem != null && cbReferralTime.SelectedItem != null)
             {
+                var scheduledTime = TimeSpan.Parse(cbReferralTime.SelectedItem.ToString()!);
+                var referralDateTime = dpDate.SelectedDate.Value.Date + scheduledTime;
+
                 var referral = new Referral
                 {
-                    ReferralDate = DateTime.Now,
-                    ReferralType = cbReferralType.SelectedItem.ToString(),
-                    Status = "New",
-                    VisitId = visit.Id
+                    VisitId = visit.Id,
+                    ReferralType = cbReferralType.SelectedItem.ToString()!,
+                    Status = ReferralStatus.New,
+                    ReferralDate = referralDateTime
                 };
 
                 _db.Referrals.Add(referral);
@@ -89,3 +130,4 @@ namespace MedicineProject
         }
     }
 }
+

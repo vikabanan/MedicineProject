@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace MedicineProject.Models
 {
      public class Visit
-    {
+     {
         public int Id { get; set; }
         public DateTime VisitDate { get; set; }
         public string Diagnosis { get; set; } = null!;
@@ -19,6 +19,6 @@ namespace MedicineProject.Models
         public Patient Patient { get; set; } = null!;
         public List<Referral> Referrals { get; set; } = new();
 
-    }
+     }
 
 }

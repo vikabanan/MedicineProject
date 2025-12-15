@@ -131,7 +131,33 @@ namespace MedicineProject
                 LoadVisits(patient.Id);
         }
 
-    } 
+        private void dgVisits_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (dgVisits.SelectedItem is not Visit visit)
+                return;
+
+            var win = new VisitDetailsWindow(visit.Id)
+            {
+                Owner = this
+            };
+
+            if (win.ShowDialog() == true)
+            {
+                if (lstPatients.SelectedItem is Patient patient)
+                    LoadVisits(patient.Id);
+            }
+        }
+
+        private void btnAddPatient_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new AddPatientWindow();
+            if (win.ShowDialog() == true)
+            {
+                LoadPatients(); 
+            }
+        }
+
+    }
 }
 
 

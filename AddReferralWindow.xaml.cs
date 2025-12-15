@@ -1,4 +1,5 @@
 ﻿using MedicineProject.Models;
+using MedicineProject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace MedicineProject
     {
         private readonly int _visitId;
         private readonly MedDbContext _db = new MedDbContext();
+        private readonly TimeSlotService _timeService;
 
         private readonly string[] ReferralTypes =
         {
@@ -36,33 +38,75 @@ namespace MedicineProject
         {
             InitializeComponent();
             _visitId = visitId;
+            _timeService = new TimeSlotService(_db);
 
             cbType.ItemsSource = ReferralTypes;
+
+            var visit = _db.Visits.Find(_visitId);
+            if (visit != null)
+            {
+                dpDate.SelectedDate = visit.VisitDate.Date;
+                LoadAvailableTimes();
+            }
+        }
+
+        private void DpDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadAvailableTimes();
+        }
+
+        private void CbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadAvailableTimes();
+        }
+
+        private void LoadAvailableTimes()
+        {
+            if (!dpDate.SelectedDate.HasValue || cbType.SelectedItem == null)
+            {
+                cbTime.ItemsSource = new List<string>();
+                return;
+            }
+
+            string type = cbType.SelectedItem.ToString()!;
+            DateTime date = dpDate.SelectedDate.Value;
+
+            cbTime.ItemsSource = _timeService.GetAvailableReferralTimes(date, type);
+
+            if (cbTime.Items.Count > 0)
+                cbTime.SelectedIndex = 0;
         }
 
         private void BtnCreateReferral_Click(object sender, RoutedEventArgs e)
         {
-            if (cbType.SelectedItem == null)
+            if (cbType.SelectedItem == null || !dpDate.SelectedDate.HasValue || cbTime.SelectedItem == null)
             {
-                MessageBox.Show("Выберите тип направления!");
+                MessageBox.Show("Выберите дату, тип и время!");
                 return;
             }
 
+            var visit = _db.Visits.Find(_visitId);
+            if (visit == null) return;
+
+            var selectedTime = TimeSpan.Parse(cbTime.SelectedItem.ToString()!);
+            var scheduledDateTime = dpDate.SelectedDate.Value.Date + selectedTime;
+
             var referral = new Referral
             {
-                ReferralDate = DateTime.Now,
-                ReferralType = cbType.SelectedItem.ToString(),
-                Status = "New",
-                VisitId = _visitId
+                VisitId = _visitId,
+                ReferralType = cbType.SelectedItem.ToString()!,
+                Status = ReferralStatus.New,
+                ReferralDate = scheduledDateTime
             };
 
             _db.Referrals.Add(referral);
             _db.SaveChanges();
 
             MessageBox.Show("Направление добавлено!");
-
             DialogResult = true;
             Close();
         }
     }
 }
+
+

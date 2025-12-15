@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MedicineProject.Models
 {
-    class MedDbContext : DbContext
+    public class MedDbContext : DbContext
     {
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Patient> Patients { get; set; } = null!;
@@ -90,7 +90,8 @@ namespace MedicineProject.Models
                     VisitId = visit.Id,
                     ReferralType = "Анализ крови",
                     ReferralDate = DateTime.Now.AddDays(-9),
-                    Status = "New"
+                    Status = ReferralStatus.New
+
                 };
                 Referrals.Add(referral);
                 SaveChanges();
