@@ -1,4 +1,5 @@
-﻿using MedicineProject.Models;
+﻿using MedicineProject.Doctor;
+using MedicineProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

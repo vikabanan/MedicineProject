@@ -1,4 +1,4 @@
-﻿<Window x:Class="MedicineProject.AddPatientWindow"
+<Window x:Class="MedicineProject.AddPatientWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -40,10 +40,12 @@
             <DatePicker x:Name="dpBirthDate" Grid.Row="1" Grid.Column="1" Margin="0,5"/>
 
             <TextBlock Text="Пол:" Grid.Row="2"/>
-            <ComboBox x:Name="cbGender" Grid.Row="2" Grid.Column="1" Margin="0,5">
-                <ComboBoxItem Content="М"/>
-                <ComboBoxItem Content="Ж"/>
-            </ComboBox>
+            <Border x:Name="borderGender" Grid.Row="2" Grid.Column="1" Margin="0,5">
+                <ComboBox x:Name="cbGender">
+                    <ComboBoxItem Content="М"/>
+                    <ComboBoxItem Content="Ж"/>
+                </ComboBox>
+            </Border>
 
             <TextBlock Text="Телефон:" Grid.Row="3"/>
             <TextBox x:Name="txtPhone" Grid.Row="3" Grid.Column="1" Margin="0,5"/>
@@ -61,7 +63,9 @@
             <TextBox x:Name="txtPassport" Grid.Row="7" Grid.Column="1" Margin="0,5"/>
 
             <TextBlock Text="Группа крови:" Grid.Row="8"/>
-            <ComboBox x:Name="cbBloodGroup" Grid.Row="8" Grid.Column="1" Margin="0,5"/>
+            <Border x:Name="borderBloodGroup" Grid.Row="8" Grid.Column="1" Margin="0,5">
+                <ComboBox x:Name="cbBloodGroup"/>
+            </Border>
 
             <StackPanel Grid.Row="9" Grid.ColumnSpan="2" Margin="0,10,0,0">
                 <TextBlock Text="Хронические заболевания:"/>

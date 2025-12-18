@@ -1,4 +1,4 @@
-﻿using MedicineProject.Models;
+using MedicineProject.Models;
 using System.Configuration;
 using System.Data;
 using System.Windows;

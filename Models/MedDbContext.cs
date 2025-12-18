@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using MedicineProject.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,30 @@ namespace MedicineProject.Models
 
         public void Seed()
         {
+            // Добавляем начальных пользователей, если их нет
+            if (!Users.Any())
+            {
+                var doctor = new User
+                {
+                    Login = "doctor",
+                    PasswordHash = PasswordHasher.HashPassword("doctor123"),
+                    FullName = "Иванов Иван Иванович",
+                    Role = "Doctor"
+                };
+                Users.Add(doctor);
+
+                var laborant = new User
+                {
+                    Login = "laborant",
+                    PasswordHash = PasswordHasher.HashPassword("laborant123"),
+                    FullName = "Петрова Мария Сергеевна",
+                    Role = "Laborant"
+                };
+                Users.Add(laborant);
+
+                SaveChanges();
+            }
+
             if (!Patients.Any())
             {
                 var patient = new Patient

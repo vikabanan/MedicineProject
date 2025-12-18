@@ -1,4 +1,4 @@
-﻿<Window x:Class="MedicineProject.DoctorWindow"
+<Window x:Class="MedicineProject.DoctorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -26,17 +26,56 @@
 
 
     <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Верхняя панель -->
+            <RowDefinition Height="*"/>    <!-- Основной контент -->
+        </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="270"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Background="White"
-        CornerRadius="10"
-        Padding="10"
-        BorderBrush="#D0D7DF"
-        BorderThickness="1"
-        Margin="0 0 15 0">
+        <!-- Верхняя панель с выходом -->
+        <Border Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Background="White"
+                CornerRadius="10"
+                Padding="10"
+                BorderBrush="#D0D7DF"
+                BorderThickness="1"
+                Margin="0 0 15 0">
+
+            <DockPanel>
+                <TextBlock Text="Рабочее место врача"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           DockPanel.Dock="Left"/>
+
+                <Button x:Name="btnLogout"
+                        Content="Выйти"
+                        Width="90"
+                        Height="28"
+                        Margin="10,0,0,0"
+                        Padding="5,0"
+                        Background="#E74C3C"
+                        Foreground="White"
+                        BorderThickness="0"
+                        HorizontalAlignment="Right"
+                        DockPanel.Dock="Right"
+                        Click="btnLogout_Click"/>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="1"
+                Grid.Column="0"
+                Background="White"
+                CornerRadius="10"
+                Padding="10"
+                BorderBrush="#D0D7DF"
+                BorderThickness="1"
+                Margin="0 0 15 0">
 
             <DockPanel>
 
@@ -68,7 +107,7 @@
 
 
 
-        <ScrollViewer Grid.Column="1" Margin="10 0 0 0">
+        <ScrollViewer Grid.Row="1" Grid.Column="1" Margin="10 0 0 0">
             <StackPanel Orientation="Vertical">
 
                 <GroupBox Header="Основная информация">

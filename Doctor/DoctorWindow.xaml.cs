@@ -1,4 +1,4 @@
-﻿using MedicineProject.Models;
+using MedicineProject.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -155,6 +155,17 @@ namespace MedicineProject
             {
                 LoadPatients(); 
             }
+        }
+
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            var loginWindow = new LoginWindow
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+
+            loginWindow.Show();
+            this.Close();
         }
 
     }
